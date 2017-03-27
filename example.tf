@@ -1,6 +1,6 @@
 provider "aws" {
-  access_key 	= "AKIAIGFCOTO7XYLSRJ5A"
-  secret_key 	= "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"
+  access_key 	= "${var.access_key}"
+  secret_key 	= "${var.secret_key}"
   region	= "us-west-1"
 }
 
@@ -8,10 +8,17 @@ provider "aws" {
 resource "aws_instance" "master1" {
   ami		= "ami-af4333cf"
   instance_type = "t2.micro"
-  key_name	= "tammuz-key.pem"
+#  key_name	= "bardez-california.pem"
   tags {
     Name = "master1"
   }
+#  provisioner "local-exec" {
+#	command = "echo ${aws_instance.master1.public_ip} > ip_address.txt"
+#  }
+}
+
+resource "aws_eip" "ip" {
+  instance = "${aws_instance.master1.id}"
 }
 
 #resource "aws_instance" "master2" {
